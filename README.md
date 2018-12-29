@@ -20,7 +20,7 @@ yum upgrade python*
 ```
 #### 接下來只需要幾個步驟
 Step1. git clone https://github.com/roryamos/DockerDiscuz.git  
-Step2. cd DockerDiscuz
-Step3. git clone https://gitee.com/ComsenzDiscuz/DiscuzX.git html/discuz
+Step2. cd DockerDiscuz  
+Step3. git clone https://gitee.com/ComsenzDiscuz/DiscuzX.git html/discuz  
 Step4. ./restart.sh  
 

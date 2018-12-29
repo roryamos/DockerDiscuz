@@ -1,0 +1,48 @@
+version: '2'
+services:
+  mariadb:
+    image: mariadb/server:10.3
+    ports:
+        - "3306:3306"
+    volumes:
+        - "./var-lib-mysql:/var/lib/mysql"
+        - "./mariadb/my.cnf:/etc/mysql/my.cnf"
+    environment:
+        MARIADB_USER: root
+        MARIADB_ROOT_PASSWORD: root
+    restart: always
+  nginx:
+    image: nginx:1.15
+    ports:
+        - "80:80"
+    links:
+        - phpfpm
+    volumes:
+        - "./nginx/default.conf:/etc/nginx/conf.d/default.conf"
+        - "./html:/var/www/html"
+        - "./log/nginx:/var/log/nginx"
+    restart: always
+  phpfpm:
+    build: phpfpm
+    links:
+        - mariadb
+    volumes:
+        - "./phpfpm/www.conf:/usr/local/etc/php-fpm.d/www.conf"
+        - "./phpfpm/php.ini:/usr/local/etc/php/php.ini"
+        - "./html:/var/www/html"
+        - "./log/php:/var/log/php"
+    restart: always
+  ftp:
+    image: bogem/ftp
+    ports:
+        - "20:20"
+        - "21:21"
+        - "47400-47470:47400-47470"
+    volumes:
+        - "./html/discuz:/home/vsftpd"
+    environment:
+        FTP_USER: ftpuser
+        FTP_PASS: ftppass
+        PASV_ADDRESS: 0.0.0.0
+    restart: always
+
